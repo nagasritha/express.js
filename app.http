@@ -5,10 +5,10 @@ POST http://localhost:3000/register
 Content-Type: application/json
 
 {
-"username":"naganithesh",
-"password":"nag#$%123",
-"email":"naganithesh@2021gmail.com",
-"gender":"male",
+"username":"nagasritha",
+"password":"nag#$%",
+"email":"nagasritha@2021gmail.com",
+"gender":"female",
 "location":"Hindupure"
 }
 ###
