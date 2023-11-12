@@ -53,7 +53,7 @@ app.delete("/drop", async (request, response) => {
 app.post("/register", async (request, response) => {
   const { username, password, email, gender, location } = request.body;
   if (password.length <= 4) {
-    response.status(400);
+    response.status(200);
     response.send("password must contain more than 4 characters");
     process.exit(1);
   }
@@ -63,14 +63,14 @@ app.post("/register", async (request, response) => {
   const query1Result = await database.all(query1);
   console.log(query1Result);
   if (query1Result !== undefined) {
-    response.send("User already registered");
+    response.send({ message: "User already registered", status: 400 });
     response.status(400);
   } else {
     const query2 = `
         INSERT INTO users(username,password,email,gender,location,score)
         VALUES("${username}","${encryptedPassword}","${email}","${gender}","${location}",0)`;
     const query2Result = await database.run(query2);
-    response.send("user added successfully");
+    response.send({ message: "user added successfully", status: 200 });
   }
 });
 //to get login
