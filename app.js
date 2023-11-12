@@ -242,7 +242,7 @@ app.put("/exercise/marks", async (request, response) => {
 });
 
 app.get("/leader", async (request, response) => {
-  const query = `SELECT * FROM users DESC LIMIT 1`;
+  const query = `SELECT * FROM users ORDER BY score DESC LIMIT 1`;
   const data = await database.get(query);
   response.send(data);
 });
