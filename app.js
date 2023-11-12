@@ -43,9 +43,10 @@ app.get("/create", async (request, response) => {
   response.send("Table created");
 });
 //to delete the table
-app.delete("/drop", async (request, response) => {
+app.delete("/drop/:id", async (request, response) => {
+  const { id } = request.params;
   const query = `
-    DROP TABLE `;
+    DELETE FROM users WHERE id=${id} `;
   const queryResult = await database.run(query);
   response.send("table droped");
 });
@@ -53,7 +54,7 @@ app.delete("/drop", async (request, response) => {
 app.post("/register", async (request, response) => {
   const { username, password, email, gender, location } = request.body;
   if (password.length <= 4) {
-    response.status(200);
+    response.status(400);
     response.send("password must contain more than 4 characters");
     process.exit(1);
   }
