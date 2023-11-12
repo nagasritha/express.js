@@ -208,8 +208,9 @@ app.get("/questions/:language", middleware, async (request, response) => {
 //to get the total marks
 app.get("/correctAnswers/:language", async (request, response) => {
   const { language } = request.params;
-  const query2 = `SELECT count(*) AS unattempted FROM exercise WHERE selected="";`;
+  const query2 = `SELECT count(*) AS unattempted FROM exercise WHERE selected="" AND language="${language}";`;
   const query2Result = await database.get(query2);
+  console.log(query2Result);
   if (query2Result.unattempted > 0) {
     response.status(400);
     response.send({ error: "Complete Your test" });
