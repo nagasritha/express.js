@@ -45,7 +45,7 @@ app.get("/create", async (request, response) => {
 //to delete the table
 app.delete("/drop", async (request, response) => {
   const query = `
-    DROP TABLE users`;
+    DROP TABLE `;
   const queryResult = await database.run(query);
   response.send("table droped");
 });
@@ -158,7 +158,8 @@ app.get("/exercise", async (request, response) => {
         optionTh VARCHAR(100),
         answer VARCHAR(100),
         selected VARCHAR(100),
-        language VARCHAR(100)
+        language VARCHAR(100),
+        marks INTEGER
         );`;
   const queryResponse = await database.run(query);
   response.send("exercise table created");
@@ -174,6 +175,7 @@ app.post("/exercise", async (request, response) => {
     answer,
     language,
     email,
+    marks,
   } = request.body;
   console.log(email);
   const query2 = `SELECT * FROM exercise WHERE question="${question}"`;
@@ -185,8 +187,8 @@ app.post("/exercise", async (request, response) => {
     response.status(400);
     response.send("Question already exists");
   } else {
-    const query1 = `INSERT INTO exercise ( question, optionFr,optionSe,optionTh,answer,language,selected)
-    VALUES("${question}","${option1}","${option2}","${option3}","${answer}","${language}","")
+    const query1 = `INSERT INTO exercise ( question, optionFr,optionSe,optionTh,answer,language,selected,marks)
+    VALUES("${question}","${option1}","${option2}","${option3}","${answer}","${language}","",${marks})
     `;
     const query1Response = await database.run(query1);
     response.send("data added successfully");
@@ -202,14 +204,15 @@ app.get("/questions/:language", async (request, response) => {
   response.send(query1Response);
 });
 //to get the total marks
-app.get("/correctAnswers", async (request, response) => {
+app.get("/correctAnswers/:language", async (request, response) => {
+  const { language } = request.params;
   const query2 = `SELECT count(*) AS unattempted FROM exercise WHERE selected="";`;
   const query2Result = await database.get(query2);
-  if (query2Result.unattempted > 0) {
+  if (query2Result.unattempted <= 0) {
     response.status(400);
     response.send("Complete Your test");
   } else {
-    const query = `SELECT count(*) AS score FROM exercise WHERE exercise.selected like exercise.answer`;
+    const query = `SELECT sum(marks) AS score FROM exercise WHERE exercise.selected like exercise.answer AND language like "${language}"`;
     const queryResult = await database.get(query);
     response.send(queryResult);
   }
@@ -219,4 +222,20 @@ app.get("/users", middleware, async (request, response) => {
   const query1 = `SELECT * from users`;
   const queryResult = await database.all(query1);
   response.send(queryResult);
+});
+
+app.put("/exercise/marks", async (request, response) => {
+  const { id, marks } = request.body;
+  console.log(id, marks);
+  const query1 = `UPDATE exercise
+    SET marks=${marks}
+    WHERE id=${id}`;
+  const query2Response = await database.run(query1);
+  response.send("updated successfully");
+});
+
+app.get("/leader", async (request, response) => {
+  const query = `SELECT * FROM users DESC LIMIT 1`;
+  const data = await database.get(query);
+  response.send(data);
 });
