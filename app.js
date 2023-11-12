@@ -139,7 +139,9 @@ app.put("/exercise", async (request, response) => {
     SET selected="${selected}"
     WHERE question="${question}"`;
   const query2Response = await database.run(query1);
-  response.send({ message: "updated successfully" });
+  const query3 = `SELECT * FROM exercise WHERE question="${question}";`;
+  const query3Response = await database.get(query3);
+  response.send(query3Response);
 });
 //to get the user Profile
 app.get("/profile", middleware, async (request, response) => {
@@ -208,7 +210,7 @@ app.get("/correctAnswers/:language", async (request, response) => {
   const { language } = request.params;
   const query2 = `SELECT count(*) AS unattempted FROM exercise WHERE selected="";`;
   const query2Result = await database.get(query2);
-  if (query2Result.unattempted <= 0) {
+  if (query2Result.unattempted > 0) {
     response.status(400);
     response.send({ error: "Complete Your test" });
   } else {
