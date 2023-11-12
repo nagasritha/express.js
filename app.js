@@ -60,7 +60,7 @@ app.post("/register", async (request, response) => {
   const encryptedPassword = await bcrypt.hash(password, 10);
   const query1 = `
     SELECT * FROM users WHERE email="${email}" AND username="${username}";`;
-  const query1Result = await database.get(query1);
+  const query1Result = await database.all(query1);
   console.log(query1Result);
   if (query1Result !== undefined) {
     response.send("User already registered");
@@ -76,7 +76,7 @@ app.post("/register", async (request, response) => {
 //to get login
 app.post("/login", async (request, response) => {
   const { username, email, password } = request.body;
-  const query1 = `SELECT * FROM users WHERE email="${email}"`;
+  const query1 = `SELECT * FROM users WHERE email="${email}" and username="${username}"`;
   const query1Result = await database.get(query1);
   console.log(query1Result);
   if (query1Result === undefined) {
