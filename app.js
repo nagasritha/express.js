@@ -61,8 +61,8 @@ app.post("/register", async (request, response) => {
   const query1 = `
     SELECT * FROM users WHERE email="${email}" AND username="${username}";`;
   const query1Result = await database.all(query1);
-  console.log(query1Result);
-  if (query1Result !== undefined) {
+  console.log(query1Result.length !== 0);
+  if (query1Result.length !== 0) {
     response.send({ message: "User already registered", status: 400 });
     response.status(400);
   } else {
