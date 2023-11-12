@@ -131,7 +131,9 @@ app.put("/score", middleware, async (request, response) => {
     SET score=${score}
     WHERE username="${username}"`;
   const query2Response = await database.run(query1);
-  response.send({ message: "updated successfully" });
+  const query2 = `select * from users where username="${username}";`;
+  const data = await database.get(query2);
+  response.send(data);
 });
 //to update the selected option
 app.put("/exercise", async (request, response) => {
