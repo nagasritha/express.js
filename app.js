@@ -59,7 +59,7 @@ app.post("/register", async (request, response) => {
   }
   const encryptedPassword = await bcrypt.hash(password, 10);
   const query1 = `
-    SELECT * FROM users WHERE email="${email}";`;
+    SELECT * FROM users WHERE email="${email}" AND username="${username}";`;
   const query1Result = await database.get(query1);
   console.log(query1Result);
   if (query1Result !== undefined) {
@@ -88,6 +88,7 @@ app.post("/login", async (request, response) => {
     const payload = { username: username };
     console.log(payload);
     const jwtToken = await jwt.sign(payload, "secret_token");
+    console.log(jwtToken);
     response.send({ jwtToken });
   } else {
     response.status(400);
@@ -123,11 +124,12 @@ const middleware = async (request, response, next) => {
 };
 //to update the user score
 app.put("/score", middleware, async (request, response) => {
-  const { email, score } = request.body;
-  console.log(email, score);
+  const { score } = request.body;
+  const { username } = request;
+  console.log(score, username);
   const query1 = `UPDATE users
     SET score=${score}
-    WHERE email="${email}"`;
+    WHERE username="${username}"`;
   const query2Response = await database.run(query1);
   response.send({ message: "updated successfully" });
 });
