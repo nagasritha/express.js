@@ -102,7 +102,7 @@ const middleware = async (request, response, next) => {
     jwtToken = authToken.split(" ")[1];
   }
   if (jwtToken === undefined) {
-    response.send("Unauthorized user");
+    response.send({ error: "Unauthorized user" });
     response.status(400);
   } else {
     const valid = jwt.verify(
@@ -111,7 +111,7 @@ const middleware = async (request, response, next) => {
       async (error, payload) => {
         if (error) {
           response.status(400);
-          response.send("Authentication failed");
+          response.send({ error: "Authentication failed" });
         } else {
           request.username = payload.username;
           console.log(payload);
@@ -129,7 +129,7 @@ app.put("/score", middleware, async (request, response) => {
     SET score=${score}
     WHERE email="${email}"`;
   const query2Response = await database.run(query1);
-  response.send("updated successfully");
+  response.send({ message: "updated successfully" });
 });
 //to update the selected option
 app.put("/exercise", async (request, response) => {
@@ -139,7 +139,7 @@ app.put("/exercise", async (request, response) => {
     SET selected="${selected}"
     WHERE question="${question}"`;
   const query2Response = await database.run(query1);
-  response.send("updated successfully");
+  response.send({ message: "updated successfully" });
 });
 //to get the user Profile
 app.get("/profile", middleware, async (request, response) => {
@@ -181,21 +181,21 @@ app.post("/exercise", async (request, response) => {
   const query2 = `SELECT * FROM exercise WHERE question="${question}"`;
   const query2Result = await database.get(query2);
   if (email !== "nagasritha@2021gmail.com") {
-    response.send("you don't have access to add the questions");
+    response.send({ message: "you don't have access to add the questions" });
     response.status(400);
   } else if (query2Result !== undefined) {
     response.status(400);
-    response.send("Question already exists");
+    response.send({ message: "Question already exists" });
   } else {
     const query1 = `INSERT INTO exercise ( question, optionFr,optionSe,optionTh,answer,language,selected,marks)
     VALUES("${question}","${option1}","${option2}","${option3}","${answer}","${language}","",${marks})
     `;
     const query1Response = await database.run(query1);
-    response.send("data added successfully");
+    response.send({ message: "data added successfully" });
   }
 });
 //to get all the questions
-app.get("/questions/:language", async (request, response) => {
+app.get("/questions/:language", middleware, async (request, response) => {
   console.log(request.params);
   const { language } = request.params;
 
@@ -210,7 +210,7 @@ app.get("/correctAnswers/:language", async (request, response) => {
   const query2Result = await database.get(query2);
   if (query2Result.unattempted <= 0) {
     response.status(400);
-    response.send("Complete Your test");
+    response.send({ error: "Complete Your test" });
   } else {
     const query = `SELECT sum(marks) AS score FROM exercise WHERE exercise.selected like exercise.answer AND language like "${language}"`;
     const queryResult = await database.get(query);
