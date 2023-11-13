@@ -172,7 +172,7 @@ app.get("/exercise", async (request, response) => {
   response.send("exercise table created");
 });
 //to add the questions by the admin
-app.post("/exercise", async (request, response) => {
+app.post("/exercise", middleware, async (request, response) => {
   const {
     id,
     question,
@@ -181,13 +181,12 @@ app.post("/exercise", async (request, response) => {
     option3,
     answer,
     language,
-    email,
     marks,
   } = request.body;
-  console.log(email);
+  const { username } = request;
   const query2 = `SELECT * FROM exercise WHERE question="${question}"`;
   const query2Result = await database.get(query2);
-  if (email !== "nagasritha@2021gmail.com") {
+  if (username !== "nagasritha") {
     response.send({ message: "you don't have access to add the questions" });
     response.status(400);
   } else if (query2Result !== undefined) {
