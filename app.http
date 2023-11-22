@@ -24,63 +24,16 @@ Content-Type: application/json
 }
 ###
 
-PUT http://localhost:3000/score
-Content-Type:application/json 
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5hZ2Fzcml0aGEiLCJpYXQiOjE2OTk2Njg0MzV9.rQ9HpnUK2DvRYXXUs9wijMmn4DpqwB6Jj44TzSZNEOE
-
-{
-"score":10}
+GET http://localhost:3000/galery
 ###
 
-GET http://localhost:3000/profile
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5hZ2Fzcml0aGEiLCJpYXQiOjE2OTk2Njg0MzV9.rQ9HpnUK2DvRYXXUs9wijMmn4DpqwB6Jj44TzSZNEOE
-###
-
-GET http://localhost:3000/exercise
-###
-
-POST http://localhost:3000/exercise
+POST http://localhost:3000/add-image
 Content-Type: application/json
 
-
 {
-    "question":"ఈ పుస్తకాన్ని హిందీ భాషలో జగదీశ్వరానంద సరస్వతి, తెలుగులో ఆరమండ్ల వెంకయ్యార్య ___",
-    "option1":"అనువదించారు",
-    "option2":"వ్యవహరిస్తారు",
-    "option3":"పాఠకులే",
-    "answer":"అనువదించారు",
-    "language":"Telugu",
-    "email":"nagasritha@2021gmail.com",
-    "marks":5
+    "imageUrl":"abcd.jpg"
 }
 
 ###
 
-GET http://localhost:3000/questions/Telugu
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5hZ2Fzcml0aGEiLCJpYXQiOjE2OTk2Njg0MzV9.rQ9HpnUK2DvRYXXUs9wijMmn4DpqwB6Jj44TzSZNEOE
-
-###
-
-PUT http://localhost:3000/exercise
-Content-Type: application/json
-
-{
-    "question":"'ర్యాబిస్' వ్యాధికి టీకా కనిపెట్టినది ఎవరు ?",
-    "selected":""
-}
-###
-
-GET http://localhost:3000/correctAnswers/Telugu
-###
-
-GET http://localhost:3000/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5hZ2Fzcml0aGEiLCJpYXQiOjE2OTk2Njg0MzV9.rQ9HpnUK2DvRYXXUs9wijMmn4DpqwB6Jj44TzSZNEOE
-###
-
-PUT http://localhost:3000/exercise/marks
-Content-Type: application/json
-
-{
-    "id":15,
-    "marks":5
-}
+GET http://localhost:3000/images

@@ -123,126 +123,39 @@ const middleware = async (request, response, next) => {
     );
   }
 };
-//to update the user score
-app.put("/score", middleware, async (request, response) => {
-  const { score } = request.body;
-  const { username } = request;
-  console.log(score, username);
-  const query1 = `UPDATE users
-    SET score=${score}
-    WHERE username="${username}"`;
-  const query2Response = await database.run(query1);
-  const query2 = `select * from users where username="${username}";`;
-  const data = await database.get(query2);
-  response.send(data);
-});
-//to update the selected option
-app.put("/exercise", async (request, response) => {
-  const { question, selected } = request.body;
-  console.log(question, selected);
-  const query1 = `UPDATE exercise
-    SET selected="${selected}"
-    WHERE question="${question}"`;
-  const query2Response = await database.run(query1);
-  const query3 = `SELECT * FROM exercise WHERE question="${question}";`;
-  const query3Response = await database.get(query3);
-  response.send(query3Response);
-});
-//to get the user Profile
-app.get("/profile", middleware, async (request, response) => {
-  const { username } = request;
-  const query = `SELECT * FROM users WHERE username="${username}"`;
-  const queryResponse = await database.get(query);
-  response.send(queryResponse);
-});
-//created the exercise
-app.get("/exercise", async (request, response) => {
-  const query = `CREATE TABLE exercise (
-        id INTEGER NOT NULL PRIMARY KEY,
-        question VARCHAR(500),
-        optionFr VARCHAR(100),
-        optionSe VARCHAR(100),
-        optionTh VARCHAR(100),
-        answer VARCHAR(100),
-        selected VARCHAR(100),
-        language VARCHAR(100),
-        marks INTEGER
-        );`;
-  const queryResponse = await database.run(query);
-  response.send("exercise table created");
-});
-//to add the questions by the admin
-app.post("/exercise", middleware, async (request, response) => {
-  const {
-    id,
-    question,
-    option1,
-    option2,
-    option3,
-    answer,
-    language,
-    marks,
-  } = request.body;
-  const { username } = request;
-  const query2 = `SELECT * FROM exercise WHERE question="${question}"`;
-  const query2Result = await database.get(query2);
-  if (username !== "nagasritha") {
-    response.send({ message: "you don't have access to add the questions" });
+//to add the image
+app.get("/galery", async (request, response) => {
+  try {
+    const query1 = `CREATE TABLE images(
+    id INTEGER NOT NULL PRIMARY KEY,
+    image_url VARCHAR(500)
+);`;
+    await database.run(query1);
+    response.send("table created");
+  } catch (error) {
+    response.send(`error:${error}`);
     response.status(400);
-  } else if (query2Result !== undefined) {
-    response.status(400);
-    response.send({ message: "Question already exists" });
-  } else {
-    const query1 = `INSERT INTO exercise ( question, optionFr,optionSe,optionTh,answer,language,selected,marks)
-    VALUES("${question}","${option1}","${option2}","${option3}","${answer}","${language}","",${marks})
-    `;
-    const query1Response = await database.run(query1);
-    response.send({ message: "data added successfully" });
   }
 });
-//to get all the questions
-app.get("/questions/:language", middleware, async (request, response) => {
-  console.log(request.params);
-  const { language } = request.params;
 
-  const query1 = `SELECT * FROM exercise WHERE language="${language}";`;
-  const query1Response = await database.all(query1);
-  response.send(query1Response);
-});
-//to get the total marks
-app.get("/correctAnswers/:language", async (request, response) => {
-  const { language } = request.params;
-  const query2 = `SELECT count(*) AS unattempted FROM exercise WHERE selected="" AND language="${language}";`;
-  const query2Result = await database.get(query2);
-  console.log(query2Result);
-  if (query2Result.unattempted > 0) {
-    response.status(400);
-    response.send({ error: "Complete Your test" });
-  } else {
-    const query = `SELECT sum(marks) AS score FROM exercise WHERE exercise.selected like exercise.answer AND language like "${language}"`;
-    const queryResult = await database.get(query);
-    response.send(queryResult);
-  }
-});
-//to get the user details by the admin
-app.get("/users", middleware, async (request, response) => {
-  const query1 = `SELECT * from users`;
-  const queryResult = await database.all(query1);
-  response.send(queryResult);
+app.post("/add-image", async (request, response) => {
+  const { imageUrl } = request.body;
+  console.log(imageUrl);
+  const query = `INSERT INTO images (image_url) VALUES("${imageUrl}");`;
+  await database.run(query);
+  response.send({ message: "Data added successfully" });
 });
 
-app.put("/exercise/marks", async (request, response) => {
-  const { id, marks } = request.body;
-  console.log(id, marks);
-  const query1 = `UPDATE exercise
-    SET marks=${marks}
-    WHERE id=${id}`;
-  const query2Response = await database.run(query1);
-  response.send("updated successfully");
-});
-
-app.get("/leader", async (request, response) => {
-  const query = `SELECT * FROM users ORDER BY score DESC LIMIT 1`;
-  const data = await database.get(query);
+app.get("/images", middleware, async (request, response) => {
+  const query1 = `SELECT * FROM images;`;
+  const data = await database.all(query1);
   response.send(data);
+});
+
+app.delete("/delete-image/:id", async (request, response) => {
+  const { id } = request.params;
+  console.log(id);
+  const query = `DELETE FROM images WHERE id=${id};`;
+  await database.run(query);
+  response.send("Item deleted");
 });
