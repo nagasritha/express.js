@@ -57,7 +57,7 @@ app.post("/login", async (request, response) => {
   console.log(query1Result);
   if (query1Result === undefined) {
     response.status(400);
-    response.send("Please register and Login");
+    response.send({ message: "Please register and Login" });
   }
   decryptPassword = await bcrypt.compare(password, query1Result.password);
   if (decryptPassword) {
@@ -252,4 +252,11 @@ app.get("/all-products", middleware, async (request, response) => {
   const query = `SELECT * FROM product`;
   const data = await database.all(query);
   response.send(data);
+});
+
+app.get("/verify-admin", middleware, async (request, response) => {
+  const { username } = request;
+  const query = `SELECT * FROM users WHERE username="${username}"`;
+  const queryResponse = await database.get(query);
+  response.send({"admin":queryResponse.admin));
 });
