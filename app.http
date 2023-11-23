@@ -5,11 +5,10 @@ POST http://localhost:3000/register
 Content-Type: application/json
 
 {
-"username":"nagasritha",
-"password":"nag#$%",
-"email":"nagasritha@2021gmail.com",
-"gender":"female",
-"location":"Hindupure"
+"username":"hari",
+"password":"hari@123",
+"email":"hari@gmail.com",
+"admin":"True"
 }
 
 ###
@@ -19,21 +18,73 @@ Content-Type: application/json
 
 {
     "username":"naganithesh",
-    "email":"naganithesh@2021gmail.com",
-    "password":"nag#$%123"
+    "email":"eernaganithesh@gmail.com",
+    "password":"nithesh@123"
 }
 ###
 
-GET http://localhost:3000/galery
+GET http://localhost:3000/user/1
 ###
 
-POST http://localhost:3000/add-image
+POST http://localhost:3000/add-product
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5hZ2FuaXRoZXNoIiwiaWF0IjoxNzAwNjcwMjgyfQ.K1kXC3KLeFWdltdqpFUs_LSMh219r4XqnlnkvExgcQQ
 
 {
-    "imageUrl":"abcd.jpg"
+"productName":"Bracelet",
+"imageUrl":"https://res.cloudinary.com/dkredoejm/image/upload/v1700671259/bracelet_tjzilu.png",
+"startingPoint":"Mumbai",
+"endingPoint":"Nellure",
+"orderDate":"10-10-2023"
 }
+###
+
+POST http://localhost:3000/event
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5hZ2FuaXRoZXNoIiwiaWF0IjoxNzAwNjcwMjgyfQ.K1kXC3KLeFWdltdqpFUs_LSMh219r4XqnlnkvExgcQQ
+
+{
+    "location":"Porbandar",
+    "deliverBy":"28-11-2023",
+    "productId":5
+}
+###
+
+GET http://localhost:3000/product/4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5hZ2FuaXRoZXNoIiwiaWF0IjoxNzAwNjcwMjgyfQ.K1kXC3KLeFWdltdqpFUs_LSMh219r4XqnlnkvExgcQQ
+###
+
+DELETE http://localhost:3000/event/24
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5hZ2FuaXRoZXNoIiwiaWF0IjoxNzAwNjcwMjgyfQ.K1kXC3KLeFWdltdqpFUs_LSMh219r4XqnlnkvExgcQQ
 
 ###
 
-GET http://localhost:3000/images
+DELETE http://localhost:3000/product/5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5hZ2FuaXRoZXNoIiwiaWF0IjoxNzAwNjcwMjgyfQ.K1kXC3KLeFWdltdqpFUs_LSMh219r4XqnlnkvExgcQQ
+
+###
+
+PUT http://localhost:3000/add-product/4
+Content-Type:application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5hZ2FuaXRoZXNoIiwiaWF0IjoxNzAwNjcwMjgyfQ.K1kXC3KLeFWdltdqpFUs_LSMh219r4XqnlnkvExgcQQ
+
+{
+"productName":"Bracelet",
+"imageUrl":"https://res.cloudinary.com/dkredoejm/image/upload/v1700671259/bracelet_tjzilu.png",
+"startingPoint":"Mumbai",
+"endingPoint":"Nellure",
+"orderDate":"10-10-2023"
+}
+###
+
+PUT http://localhost:3000/event/24
+Content-Type:application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5hZ2FuaXRoZXNoIiwiaWF0IjoxNzAwNjcwMjgyfQ.K1kXC3KLeFWdltdqpFUs_LSMh219r4XqnlnkvExgcQQ
+
+{
+    
+    "location":"Porbandar",
+    "deliverBy":"28-11-2023",
+    "productId":4
+
+}
