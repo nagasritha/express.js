@@ -258,5 +258,5 @@ app.get("/verify-admin", middleware, async (request, response) => {
   const { username } = request;
   const query = `SELECT * FROM users WHERE username="${username}"`;
   const queryResponse = await database.get(query);
-  response.send({"admin":queryResponse.admin));
+  response.send({ admin: queryResponse.admin });
 });
