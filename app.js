@@ -26,19 +26,23 @@ const initalizingServerAndDb = async () => {
 
 initalizingServerAndDb();
 
-app.post("/", async (request, response) => {
-  const query1 = `INSERT INTO posts ('post_description','author')
-  VALUES("SQL is the abbreviation of the Structured Query Language words and, it is used to query the databases.","lalitha"),
-  ("Transact-SQL (T-SQL) language is an extended implementation of the SQL for the Microsoft SQL Server","Kala"),
-  ("SQL databases are used to store structured data while NoSQL databases like MongoDB are used to save unstructured data.","Kamala"),
-  (" MongoDB is used to save unstructured data in JSON format.","Harika");`;
+app.post("/post", async (request, response) => {
+  const query1 = `INSERT INTO posts(post_description,userId)
+    VALUES("SQL is the abbreviation of the Structured Query Language words and, it is used to query the databases.",1),
+    ("Transact-SQL (T-SQL) language is an extended implementation of the SQL for the Microsoft SQL Server",1),
+    ("SQL databases are used to store structured data while NoSQL databases like MongoDB are used to save unstructured data.",2),
+    (" MongoDB is used to save unstructured data in JSON format.",3);`;
   await database.run(query1);
-  response.send("Data added");
+  response.send("data added");
 });
 
 app.get("/posts", async (request, response) => {
-  console.log("post");
-  const query = `SELECT * FROM posts;`;
+  const query = `
+SELECT
+  *
+FROM
+  user NATURAL
+  JOIN posts;`;
   const responseData = await database.all(query);
   response.send(responseData);
 });
