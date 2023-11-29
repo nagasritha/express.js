@@ -56,7 +56,7 @@ app.get("/noOfPosts", async (request, response) => {
 
 app.get("/PostById/:id", async (request, response) => {
   const { id } = request.params;
-  const query1 = `SELECT * FROM posts WHERE id=${id};`;
+  const query1 = `SELECT * FROM posts NATURAL JOIN user WHERE id=${id};`;
   const data = await database.get(query1);
   response.send(data);
 });
