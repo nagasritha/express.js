@@ -47,6 +47,13 @@ FROM
   response.send(responseData);
 });
 
+app.get("/noOfPosts", async (request, response) => {
+  const query = `SELECT username, COUNT() AS no_of_posts FROM user NATURAL JOIN posts
+  GROUP BY username;`;
+  const responseData = await database.all(query);
+  response.send(responseData);
+});
+
 let eventList = [];
 
 const middleware = (request, response, next) => {
